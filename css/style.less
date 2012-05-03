@@ -1,0 +1,54 @@
+.rounded-corners (@radius: 10px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
+}
+
+.unselectable {  
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.tapped {
+  -moz-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);        
+}
+
+#playmat {
+  width: 800px;
+  height: 600px;
+  background: lightBlue;
+  margin: 0 auto;
+}
+
+.card {
+  width: 223px;
+  height: 310px;
+  background: black;
+  float: left;
+  position: relative;
+  margin: 45px;
+  overflow: hidden;
+  cursor: pointer;
+  .rounded-corners;
+  .unselectable;
+
+  .power-toughness {
+    position: absolute;
+    width: 33px;
+    height: 13px;
+    bottom: 20px;
+    right: 21px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+    background: whiteSmoke;
+  }
+}
