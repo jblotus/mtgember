@@ -24,7 +24,7 @@
   <script type="text/x-handlebars">
     {{#view App.PlayMatView}}
       <div {{bindAttr id="id"}}>
-        {{#each content.cards}}
+        {{#each App.cardsController}}
           {{view App.CardView contentBinding="this"}}
         {{/each}}
       </div>
