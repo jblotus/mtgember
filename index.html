@@ -24,11 +24,18 @@
   <script type="text/x-handlebars">
     {{#view App.PlayMatView}}
       <div {{bindAttr id="id"}}>
+
+        {{view App.LibraryView}}
+
         {{#each App.cardsController}}
           {{view App.CardView contentBinding="this"}}
         {{/each}}
       </div>
     {{/view}}
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="library">
+    <div {{bindAttr id="id"}}>foo</div>
   </script>
 
   <script type="text/x-handlebars" data-template-name="card">

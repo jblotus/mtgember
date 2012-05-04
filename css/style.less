@@ -1,3 +1,7 @@
+@scale: .80%;
+@cardWidth: 223px * @scale;
+@cardHeight: 310px * @scale;
+
 .rounded-corners (@radius: 10px) {
   -webkit-border-radius: @radius;
   -moz-border-radius: @radius;
@@ -23,18 +27,28 @@
 
 #playmat {
   width: 800px;
-  height: 600px;
+  height: 400px;
   background: lightBlue;
   margin: 0 auto;
+  position: relative;
+
+  #library {
+    .card;
+    margin: 10px * @scale;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
 }
 
 .card {
-  width: 223px;
-  height: 310px;
+  width: @cardWidth;
+  height: @cardHeight;
   background: black;
+  background-size: @cardWidth @cardHeight;
   float: left;
   position: relative;
-  margin: 45px;
+  margin: 10px * @scale;
   overflow: hidden;
   cursor: pointer;
   .rounded-corners;
@@ -42,12 +56,12 @@
 
   .power-toughness {
     position: absolute;
-    width: 33px;
-    height: 13px;
-    bottom: 20px;
-    right: 21px;
+    width: 33px * @scale;
+    height: 13px * @scale;
+    bottom: 20px * @scale;
+    right: 21px * @scale;
     text-align: center;
-    font-size: 11px;
+    font-size: 11px * @scale;
     font-weight: bold;
     background: whiteSmoke;
   }

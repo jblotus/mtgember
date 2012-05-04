@@ -55,6 +55,15 @@ App.PlayMatView = Em.View.extend({
   id: 'playmat'
 });
 
+App.LibraryView = Em.View.extend({
+  templateName: 'library',
+  id: 'library'
+});
+
+App.libraryController = Ember.ArrayController.create({
+
+});
+
 App.cardsController = Ember.ArrayController.create({
 
   contentBinding: 'App.Cards.cards',
