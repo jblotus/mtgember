@@ -1,16 +1,52 @@
 var App = Em.Application.create();
 
 App.Card = Em.Object.extend({
-  name: '',
+  name: '', 
+  img_src: '', 
+  type: '',  
+  power: null, 
+  toughness: null, 
   tapped: false
 });
 
+var cardStub = [
+  { 
+    name: 'Grizzly Bears', 
+    img_src: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=129586&type=card', 
+    type: 'creature',  
+    power: 2, 
+    toughness: 2, 
+    tapped: true 
+  },
+
+  { 
+    name: 'Gravecrawler', 
+    img_src: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=222902&type=card', 
+    type: 'creature',  
+    power: 2, 
+    toughness: 1 
+  }
+];
+
 App.Cards = Em.Object.create({
+
   cards:  [],
+
   shuffle : function() { 
     var o = this.get('cards');
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     this.set('cards', o);
+  },
+
+  find: function() {
+
+    var cards = cardStub;
+
+    cards = cards.map(function(item, index, self) {
+      return App.Card.create(item);
+    });
+
+    this.set('cards', cards);
   }
 });
  
@@ -24,10 +60,9 @@ App.cardsController = Ember.ArrayController.create({
   contentBinding: 'App.Cards.cards',
 
   refresh: function() {
-    App.Cards.set('cards', [
-      App.Card.create({ name: 'Grizzly Bears', img_src: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=129586&type=card', type: 'creature',  power: 2, toughness: 2, tapped: true }),
-      App.Card.create({ name: 'Gravecrawler', img_src: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=222902&type=card', type: 'creature',  power: 2, toughness: 1 })
-    ]);
+
+    //cards coming from the model now right?
+    App.Cards.find();
 
     return this;
   },

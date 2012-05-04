@@ -1,0 +1,27 @@
+info it worked if it ends with ok
+verbose cli [ 'C:\\Program Files (x86)\\nodejs\\\\node.exe',
+verbose cli   'C:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+verbose cli   'install' ]
+info using npm@1.1.19
+info using node@v0.6.16
+verbose C:\Program Files (x86)\nodejs\\node.exe node symlink
+verbose config file C:\Users\jblotus\.npmrc
+verbose config file C:\Program Files (x86)\nodejs\etc\npmrc
+verbose config file C:\Program Files (x86)\nodejs\node_modules\npm\npmrc
+ERR! Couldn't read dependencies.
+ERR! Error: ENOENT, open 'C:\Sites\mtgember\package.json'
+ERR! You may report this log at:
+ERR!     <http://github.com/isaacs/npm/issues>
+ERR! or email it to:
+ERR!     <npm-@googlegroups.com>
+ERR! 
+ERR! System Windows_NT 6.1.7601
+ERR! command "C:\\Program Files (x86)\\nodejs\\\\node.exe" "C:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install"
+ERR! cwd C:\Sites\mtgember
+ERR! node -v v0.6.16
+ERR! npm -v 1.1.19
+ERR! path C:\Sites\mtgember\package.json
+ERR! code ENOENT
+ERR! message ENOENT, open 'C:\Sites\mtgember\package.json'
+ERR! errno {}
+verbose exit [ 1, true ]
