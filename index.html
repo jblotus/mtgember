@@ -21,21 +21,27 @@
 </head>
 <body>
 
-  <script type="text/x-handlebars">
-    {{#view App.PlayMatView}}
-      <div {{bindAttr id="id"}}>
 
-        {{view App.LibraryView}}
+  <script type="text/x-handlebars" data-template-name="start">
+    <a href="#" {{action "startGame" target="App.gameState" on="click"}}>Start Game</a>
+  </script>
 
-        {{#each App.cardsController}}
-          {{view App.CardView contentBinding="this"}}
-        {{/each}}
-      </div>
-    {{/view}}
+  <script type="text/x-handlebars" data-template-name="playmat">
+    <div {{bindAttr id="id"}}>
+
+      {{view App.LibraryView contentBinding="App.libraryController"}}
+
+      {{#each App.handController}}
+        {{view App.CardView contentBinding="this"}}
+      {{/each}}
+    </div>
   </script>
 
   <script type="text/x-handlebars" data-template-name="library">
-    <div {{bindAttr id="id"}}>foo</div>
+    <div {{bindAttr id="id"}}>
+      Num Cards: {{content.length}} <br />
+      <a href="#" {{action "draw" on="click"}}>Draw Card</a>
+    </div>
   </script>
 
   <script type="text/x-handlebars" data-template-name="card">
