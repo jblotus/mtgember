@@ -49,9 +49,10 @@ App.Cards = Em.Object.create({
     this.set('cards', cards);
   }
 });
- 
+
 
 App.PlayMatView = Em.View.extend({
+  templateName: 'playmat',
   id: 'playmat'
 });
 
@@ -109,4 +110,34 @@ App.CardView = Em.View.extend({
   }
 });
 
-App.cardsController.refresh().shuffle();
+
+
+
+App.gameState = Em.StateManager.create({
+  enableLogging: true,
+  view: App.PlayMatView,  
+  initialState: 'turn',
+  turn: Em.State.create({
+
+    initialState: 'beginTurn',
+
+    beginTurn: Ember.State.create({
+      
+      enter: function(stateManager, transition) {
+        App.cardsController.refresh().shuffle();
+        console.log('entering start phase')
+        stateManager.goToState('turn.upkeep');
+      },
+
+      exit: function(stateManager, transition) {
+        console.log("exiting start phase");
+      }
+    }),
+
+    upkeep: Ember.State.create({
+      enter: function(stateManager, transition) {
+        console.log('entering upkeep')
+      }
+    })
+  })
+});
