@@ -84,6 +84,21 @@ App.Hand = Em.Object.create({
   }
 });
 
+App.phasesController = Em.ArrayController.create({
+  content: [
+    'Untap step', 'Upkeep step', 'Draw step',
+    'Main',
+    'Beginning of Combat', 'Declare Attackers', 'Declare blocks', 'Combat Damage', 'End of Combat',
+    'Main',
+    'End Step',
+    'Cleanup'
+  ]
+});
+
+App.PhasesView = Em.View.extend({
+  templateName: 'phases'
+});
+
 
 App.PlayMatView = Em.View.extend({
   templateName: 'playmat',
@@ -157,6 +172,16 @@ App.StartView = Em.View.extend({
   }
 });
 
+App.TurnState = Em.StateManager.extend({
+  enableLogging: true,
+  initialState: 'draw',
+  draw: Em.State.create({
+    enter: function() {
+      App.handController.drawCard();
+    }    
+  })
+});
+
 App.GameState = Em.StateManager.extend({
   enableLogging: true,
   initialState: 'stopped',
@@ -173,6 +198,7 @@ App.GameState = Em.StateManager.extend({
     enter: function() { 
       App.playMatView = App.PlayMatView.create();     
       App.playMatView.append();
+      App.turnState = App.TurnState.create();
     },
     exit: function() {
       App.playMatView.remove();
