@@ -1,4 +1,9 @@
-var App = Em.Application.create();
+App = Em.Application.create({
+  ready: function() {
+    App.gameState = App.GameState.create();
+    this._super();
+  }
+});
 
 App.Card = Em.Object.extend({
   name: '', 
@@ -65,8 +70,16 @@ App.Hand = Em.Object.create({
 
   cards:  [],
 
-  draw: function() {
-    var card = App.Library.get('cards').popObject();
+  drawCard: function() {
+    var cards = App.Library.get('cards');
+
+    if (cards.length === 0) {
+      alert('lost game');
+      return;
+    }
+
+    var card = cards.popObject();
+
     this.get('cards').pushObject(card);
   }
 });
@@ -80,8 +93,8 @@ App.PlayMatView = Em.View.extend({
 App.LibraryView = Em.View.extend({
   templateName: 'library',
   id: 'library',
-  draw: function() {
-    App.handController.draw();
+  drawCard: function() {
+    App.handController.drawCard();
   }
 });
 
@@ -104,8 +117,8 @@ App.libraryController = Ember.ArrayController.create({
 
 App.handController = Ember.ArrayController.create({
   contentBinding: 'App.Hand.cards',
-  draw: function(e) {
-    App.Hand.draw();
+  drawCard: function(e) {
+    App.Hand.drawCard();
   }
 });
 
@@ -137,36 +150,32 @@ App.CardView = Em.View.extend({
   }
 });
 
-
 App.StartView = Em.View.extend({
-  templateName: 'start'
+  templateName: 'start',
+  startGame: function() {
+    App.gameState.goToState('playing');
+  }
 });
 
-App.gameState = Em.StateManager.create({
+App.GameState = Em.StateManager.extend({
   enableLogging: true,
-  initialState: 'notPlaying',
-
-  notPlaying: Em.ViewState.create({
-    view: App.StartView,
-
-    startGame: function(stateManager, event) {      
-      App.PlayMatView.create().appendTo('body');
-      stateManager.goToState('playing');
+  initialState: 'stopped',
+  stopped: Em.State.create({
+    enter: function() {
+      App.startView = App.StartView.create();
+      App.startView.append();
+    },
+    exit: function() {
+      App.startView.remove();
     }
   }),
-
   playing: Em.State.create({
-
-    initialState: 'beginTurn',
-
-    beginTurn: Ember.State.create({
-      
-      enter: function(stateManager, transition) {
-        App.libraryController.shuffle();
-        stateManager.goToState('playing.upkeep');
-      }
-    }),
-
-    upkeep: Ember.State.create()
+    enter: function() { 
+      App.playMatView = App.PlayMatView.create();     
+      App.playMatView.append();
+    },
+    exit: function() {
+      App.playMatView.remove();
+    }
   })
 });

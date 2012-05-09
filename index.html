@@ -23,7 +23,7 @@
 
 
   <script type="text/x-handlebars" data-template-name="start">
-    <a href="#" {{action "startGame" target="App.gameState" on="click"}}>Start Game</a>
+    <a href="#" {{action "startGame"}}>Start Game</a>
   </script>
 
   <script type="text/x-handlebars" data-template-name="playmat">
@@ -40,7 +40,7 @@
   <script type="text/x-handlebars" data-template-name="library">
     <div {{bindAttr id="id"}}>
       Num Cards: {{content.length}} <br />
-      <a href="#" {{action "draw" on="click"}}>Draw Card</a>
+      <a href="#" {{action "drawCard"}}>Draw Card</a>
     </div>
   </script>
 
