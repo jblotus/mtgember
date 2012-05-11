@@ -1,3 +1,7 @@
+var Em = window.Em;
+var App = window.App;
+var Handlebars = window.Handlebars;
+
 App = Em.Application.create({
   ready: function() {
     App.gameState = App.GameState.create();
@@ -6,73 +10,77 @@ App = Em.Application.create({
 });
 
 App.Card = Em.Object.extend({
-  name: '', 
-  img_src: '', 
+  name: '',
+  img_src: '',
   type: '',
-  subtypes: [],  
-  power: null, 
-  toughness: null, 
+  subtypes: [],
+  power: null,
+  toughness: null,
   tapped: false
 });
 
 var cardStub = [
-  { 
-    name: 'Grizzly Bears', 
-    img_src: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=129586&type=card', 
+  {
+    name: 'Grizzly Bears',
+    img_src: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=129586&type=card',
     type: 'Creature',
     subtypes: ['Bear'],
-    power: 2, 
-    toughness: 2 
+    power: 2,
+    toughness: 2
   },
 
-  { 
-    name: 'Gravecrawler', 
-    img_src: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=222902&type=card', 
+  {
+    name: 'Gravecrawler',
+    img_src: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=222902&type=card',
     type: 'Creature',
     subtypes: ['Zombie'],
-    power: 2, 
-    toughness: 1 
+    power: 2,
+    toughness: 1
   },
 
-  { 
-    name: 'Swamp', 
-    img_src: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=269627&type=card', 
+  {
+    name: 'Swamp',
+    img_src: 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=269627&type=card',
     type: 'Basic Land',
     subtypes: ['Swamp'],
-    power: 2, 
-    toughness: 1 
+    power: 2,
+    toughness: 1
   }
 ];
 
 App.Library = Em.Object.create({
 
-  cards:  [],
+  cards: [],
 
   init: function() {
 
     var cards = cardStub;
 
-    cards = cards.map(function(item, index, self) {
+    cards = cards.map(function(item) {
       return App.Card.create(item);
     });
 
     this.set('cards', cards);
   },
 
-  shuffle : function() { 
+  shuffle: function() {
     var o = this.get('cards');
-    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    for (var j, x, i = o.length; i;) {
+      j = parseInt(Math.random() * i, 10);
+      x = o[--i];
+      o[i] = o[j];
+      o[j] = x;
+    }
     this.set('cards', o);
   }
 });
 
 App.Hand = Em.Object.create({
 
-  cards:  [],
+  cards: [],
 
   drawCard: function() {
     var cards = App.Library.get('cards');
-
     if (cards.length === 0) {
       alert('lost game');
       return;
@@ -113,7 +121,7 @@ App.LibraryView = Em.View.extend({
   }
 });
 
-App.libraryController = Ember.ArrayController.create({
+App.libraryController = Em.ArrayController.create({
 
   contentBinding: 'App.Library.cards',
 
@@ -130,9 +138,9 @@ App.libraryController = Ember.ArrayController.create({
   }
 });
 
-App.handController = Ember.ArrayController.create({
+App.handController = Em.ArrayController.create({
   contentBinding: 'App.Hand.cards',
-  drawCard: function(e) {
+  drawCard: function() {
     App.Hand.drawCard();
   }
 });
@@ -140,7 +148,7 @@ App.handController = Ember.ArrayController.create({
 Handlebars.registerHelper('ifCreature', function(type, options) {
   if (Em.getPath(this, type) === 'Creature') {
     return options.fn(this);
-  }  
+  }
 });
 
 App.CardView = Em.View.extend({
@@ -153,10 +161,10 @@ App.CardView = Em.View.extend({
   }.property(),
 
   toggleTapped: function() {
-    
+
     var content = this.get('content');
     var tapped = content.get('tapped');
-    
+
     return tapped ? content.set('tapped', false) : content.set('tapped', true);
   },
 
@@ -178,7 +186,7 @@ App.TurnState = Em.StateManager.extend({
   draw: Em.State.create({
     enter: function() {
       App.handController.drawCard();
-    }    
+    }
   })
 });
 
@@ -187,7 +195,7 @@ App.GameState = Em.StateManager.extend({
   initialState: 'stopped',
   stopped: Em.State.create({
     enter: function() {
-      App.startView = App.StartView.create();
+      App.startView = App.StartView.create({});
       App.startView.append();
     },
     exit: function() {
@@ -195,10 +203,10 @@ App.GameState = Em.StateManager.extend({
     }
   }),
   playing: Em.State.create({
-    enter: function() { 
-      App.playMatView = App.PlayMatView.create();     
+    enter: function() {
+      App.playMatView = App.PlayMatView.create({});
       App.playMatView.append();
-      App.turnState = App.TurnState.create();
+      App.turnState = App.TurnState.create({});
     },
     exit: function() {
       App.playMatView.remove();
